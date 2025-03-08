@@ -142,14 +142,51 @@ grammar ArithLang;
 
  infixadd returns [Exp ast]
      locals [ArrayList<Exp> list]:
-	l=infixadd '+' r=exp { 
+	l=infixadd '+' r=term { 
                             $list = new ArrayList<Exp>();
 							$list.add($l.ast);
 							$list.add($r.ast);
 							$ast = new AddExp($list);		 
 	                     }
-	| n=numexp {$ast = $n.ast;}
+	l=infixadd '-' r=term { 
+                            $list = new ArrayList<Exp>();
+							$list.add($l.ast);
+							$list.add($r.ast);
+							$ast = new SubExp($list);		 
+	                     }
+	| n=term {$ast = $n.ast;}
 	      ;
+
+term returns [Exp ast]
+     locals [ArrayList<Exp> list]:
+	l=infixadd '*' r=factor { 
+                            $list = new ArrayList<Exp>();
+							$list.add($l.ast);
+							$list.add($r.ast);
+							$ast = new MultExp($list);		 
+	                     }
+	l=infixadd '/' r=factor { 
+                            $list = new ArrayList<Exp>();
+							$list.add($l.ast);
+							$list.add($r.ast);
+							$ast = new DivExp($list);		 
+	                     }
+	| n=factor {$ast = $n.ast;}
+	      ;
+ factor returns [Exp ast]
+     locals [ArrayList<Exp> list]:
+	l=infixadd '^' r=exponent { 
+                            $list = new ArrayList<Exp>();
+							$list.add($l.ast);
+							$list.add($r.ast);
+							$ast = new PowExp($list);		 
+	                     } 
+	| n=exponent {$ast = $n.ast;}
+	      ;
+exponent returns [Exp ast]
+     locals [ArrayList<Exp> list]:
+	n=numexp {$ast = $n.ast;}
+	      ;	  
 
  // Lexical Specification of this Programming Language
  //  - lexical specification rules start with uppercase
@@ -179,3 +216,6 @@ grammar ArithLang;
  WS  :  [ \t\r\n\u000C]+ -> skip;
  Comment :   '/*' .*? '*/' -> skip;
  Line_Comment :   '//' ~[\r\n]* -> skip;
+
+
+
