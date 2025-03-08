@@ -149,7 +149,7 @@ grammar ArithLang;
 							$list.add($r.ast);
 							$ast = new AddExp($list);		 
 	                     }
-	l=infixadd '-' r=term { 
+	| l=infixadd '-' r=term { 
                             $list = new ArrayList<Exp>();
 							$list.add($l.ast);
 							$list.add($r.ast);
@@ -161,13 +161,13 @@ grammar ArithLang;
 term returns [Exp ast]
      locals [ArrayList<Exp> list]
 	@init { $list = new ArrayList<Exp>(); } :
-	l=infixadd '*' r=factor { 
+	l=term '*' r=factor { 
                             $list = new ArrayList<Exp>();
 							$list.add($l.ast);
 							$list.add($r.ast);
 							$ast = new MultExp($list);		 
 	                     }
-	l=infixadd '/' r=factor { 
+	|l=term '/' r=factor { 
                             $list = new ArrayList<Exp>();
 							$list.add($l.ast);
 							$list.add($r.ast);
@@ -178,7 +178,7 @@ term returns [Exp ast]
  factor returns [Exp ast]
      locals [ArrayList<Exp> list]
 	@init { $list = new ArrayList<Exp>(); } :
-	l=infixadd '^' r=exponent { 
+	l=factor '^' r=exponent { 
                             $list = new ArrayList<Exp>();
 							$list.add($l.ast);
 							$list.add($r.ast);
