@@ -1,0 +1,26 @@
+Program ::= Exp
+
+Exp     ::= Exp + Term
+            | Exp - term
+            | Term
+
+Term    ::= Term * Factor
+            | Term / Factor
+            | Factor
+
+Factor  ::= Factor^Exponent
+            |Exponent
+
+Exponent ::= ( Exp )
+            | Number
+            | -Number
+            | Float
+
+Float ::= Number.Number
+
+Number  ::= Digit
+            | DigitNotZero Digit+
+
+Digit   ::= [0-9]
+
+DigitNotZero ::= [1-9]
