@@ -141,7 +141,8 @@ grammar ArithLang;
 		;
 
  infixadd returns [Exp ast]
-     locals [ArrayList<Exp> list]:
+     locals [ArrayList<Exp> list]
+	@init { $list = new ArrayList<Exp>(); } :
 	l=infixadd '+' r=term { 
                             $list = new ArrayList<Exp>();
 							$list.add($l.ast);
@@ -158,7 +159,8 @@ grammar ArithLang;
 	      ;
 
 term returns [Exp ast]
-     locals [ArrayList<Exp> list]:
+     locals [ArrayList<Exp> list]
+	@init { $list = new ArrayList<Exp>(); } :
 	l=infixadd '*' r=factor { 
                             $list = new ArrayList<Exp>();
 							$list.add($l.ast);
@@ -174,7 +176,8 @@ term returns [Exp ast]
 	| n=factor {$ast = $n.ast;}
 	      ;
  factor returns [Exp ast]
-     locals [ArrayList<Exp> list]:
+     locals [ArrayList<Exp> list]
+	@init { $list = new ArrayList<Exp>(); } :
 	l=infixadd '^' r=exponent { 
                             $list = new ArrayList<Exp>();
 							$list.add($l.ast);
@@ -184,7 +187,9 @@ term returns [Exp ast]
 	| n=exponent {$ast = $n.ast;}
 	      ;
 exponent returns [Exp ast]
-     locals [ArrayList<Exp> list]:
+
+     locals [ArrayList<Exp> list]
+	@init { $list = new ArrayList<Exp>(); } :
 	n=numexp {$ast = $n.ast;}
 	      ;	  
 
